@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    async function foo() {
+    console.log("start");
+    await bar();
+    console.log("end");
+  }
+  
+  async function bar() {
+    console.log("bar");
+  }
+  
+  console.log(1);
+  
+  setTimeout(() => {
+    console.log("time");
+  });
+  
+  foo();
+  
+  new Promise((resolve) => {
+    console.log("p1");
+    resolve();
+  }).then(() => {
+    console.log("p2");
+  });
+  
+  console.log(2);
+  </script>
+</body>
+</html>
+第一次循环：
+整体script作为第一个宏任务进入主线程，遇到console.log,输出1；
+遇到setTimeout，其回调函数被发配到宏任务Event Queue中
+遇到foo函数并调用:
+    遇到console.log，输出start；
+    遇到函数bar并调用：
+        遇到console.log，输出bar；
+    foo函数剩余部分被分配到微任务中，任务继续向下执行；
+遇到Promise，new Promise直接输出p1，then被分配到微任务中；
+遇到console.log,输出2。
+
+此时系统输出 1  start   bar   p1    2
+
+第一次循环结束后执行微任务：
+遇到第一个微任务foo函数的剩余部分，遇到遇到console.log,输出end；
+遇到第二个微任务then，遇到console.log,输出p2。
+ 
+此时系统输出 end    p2
+
+第二次循环：
+系统从宏任务Event Queue开始
+遇到console.log,输出time
+
+此时系统输出time
+

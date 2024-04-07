@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input{
+            width: 200px;
+            height: 28px;
+        }
+    </style>
+</head>
+<body>
+    搜索框：<input type="text" id="sousuo">
+    <script>
+        //节流函数
+        const throttle =function jieliu(fn,interval){
+        let _self =fn, //保存需要被延迟执行的函数引用
+        timer, //定时器
+        firstTime = true;//是否为第一次调用
+    
+    return function(){
+        let args =arguments;
+        _me = this;
+        console.log(_me);
+        if(firstTime){
+            _self.apply(_me, args);
+            return firstTime =false;
+        }
+        if(timer){//如果定时器还在，则说明前一次延迟执行还没有完成
+            return false;
+        }
+        timer=setTimeout(function(){
+            clearTimeout(timer);
+            timer = null;
+            _self.apply(_me, args);
+        },interval||500)
+    }
+}
+
+window.onresize = throttle(function(){
+    console.log(1);
+},2000);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input{
+            width: 200px;
+            height: 28px;
+        }
+    </style>
+</head>
+<body>
+    搜索框：<input type="text" id="sousuo">
+    <script>
+        //获得时间戳
+        let timeStamp = new Date().getTime();
+        let time = new Date(timeStamp*1000);
+        console.log(time);
+        //防抖函数
+        function debounce(fn,delay = 500) {
+            let timer = null;
+            return function() {
+                if (timer) {
+                    clearTimeout(timer)
+                }
+                timer = setTimeout(() => {
+                    fn.apply(this,arguments)
+                    timer = null
+                },delay)
+            }
+        }
+       debounce();
+    </script>
+    
+</body>
+</html>
